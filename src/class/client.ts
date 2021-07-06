@@ -6,6 +6,7 @@ import { Api } from "telegram";
 import { parseCommand } from "../util/message";
 import Modules, { aliases, commands } from "./modules";
 import { join } from "path";
+import bigInt from "big-integer";
 
 export default class Client extends TypedEmitter<ClientEvents> {
     public gramjs = new GramClient();
@@ -27,7 +28,11 @@ export default class Client extends TypedEmitter<ClientEvents> {
     }
 
     public launch(): Promise<void> {
-    	new Modules(this.gramjs, join(__dirname, "..", "commands")).load();
+    	new Modules(this, join(__dirname, "..", "commands")).load();
     	return this.gramjs.launch();
+    }
+
+    public genId(): number {
+    	return bigInt(-Math.floor(Math.random() * 10000000000)).toJSNumber();
     }
 }

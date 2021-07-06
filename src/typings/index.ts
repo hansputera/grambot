@@ -1,3 +1,4 @@
+import type Client from "class/client";
 import type Context from "class/context";
 import type { Api } from "telegram";
 import type { MessageIDLike } from "telegram/define";
@@ -79,4 +80,20 @@ export interface CommandProps {
 export interface CommandComponent {
     meta: CommandProps;
     run(ctx: Context, args: string[]): unknown;
+    client?: Client;
 }
+/*
+export interface InlineKeyboardButton {
+    text: string;
+    data: string;
+    url?: string;
+}
+
+export interface CustomReplyMarkup {
+    selective?: boolean;
+    single_use?: boolean;
+    resize?: boolean;
+    rows: {
+        buttons: InlineKeyboardButton[];
+    }[];
+}*/
