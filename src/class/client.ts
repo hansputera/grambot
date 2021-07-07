@@ -22,7 +22,7 @@ export default class Client extends TypedEmitter<ClientEvents> {
     	this.gramjs.onNewMessage((ctx) => {
     		this.emit("message", ctx);
     		const parses = parseCommand(ctx.message.text, ctx.message.entities);
-    		if (parses) this.emit("command", ctx, parses);
+    		if (parses && !ctx.message.sender.is_bot) this.emit("command", ctx, parses);
     	});
     	this.gramjs.onError((err) => {
     		this.emit("error", err);
