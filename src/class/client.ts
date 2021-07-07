@@ -7,14 +7,16 @@ import { parseCommand } from "../util/message";
 import Modules, { aliases, commands } from "./modules";
 import { join } from "path";
 import bigInt from "big-integer";
+import Socket from "./socket";
 
 export default class Client extends TypedEmitter<ClientEvents> {
     public gramjs = new GramClient();
     public Api = Api;
     public commands = commands;
     public aliases = aliases;
+	public socket_app = new Socket(this);
 
-    constructor() {
+	constructor() {
     	super();
 
     	this.gramjs.onNewMessage((ctx) => {
@@ -25,14 +27,14 @@ export default class Client extends TypedEmitter<ClientEvents> {
     	this.gramjs.onError((err) => {
     		this.emit("error", err);
     	});
-    }
+	}
 
-    public launch(): Promise<void> {
+	public launch(): Promise<void> {
     	new Modules(this, join(__dirname, "..", "commands")).load();
     	return this.gramjs.launch();
-    }
+	}
 
-    public genId(): number {
+	public genId(): number {
     	return bigInt(-Math.floor(Math.random() * 10000000000)).toJSNumber();
-    }
+	}
 }

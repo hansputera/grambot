@@ -6,6 +6,7 @@ const bot = new Client();
 bot.launch();
 
 bot.on("command", async (ctx, { command, args }) => {
+	bot.socket_app.app.emit("commandTry", { command, from: { id: ctx.message.sender.id, username: ctx.message.sender.username} });
 	const cmd = bot.commands.search(command) || bot.commands.get(bot.aliases.get(command) as string);
 	if (!cmd) return;
 
