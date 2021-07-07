@@ -2,6 +2,7 @@ import type Client from "class/client";
 import type Context from "class/context";
 import type { Api } from "telegram";
 import type { MessageIDLike } from "telegram/define";
+import type { Message } from "telegram/tl/custom/message";
 import { chatType } from "util/message";
 
 export interface SendMessageOptions {
@@ -11,6 +12,21 @@ export interface SendMessageOptions {
     silent?: boolean;
     entities?: Api.TypeMessageEntity[];
     replyToMsgId?: MessageIDLike;
+}
+
+export interface EditMessageOptions {
+    no_webpage?: boolean;
+    peer: string | number;
+    id: number;
+    message: string;
+    entities?: Api.TypeMessageEntity[];
+    schedule_date?: number;
+    reply_markup?: Api.TypeReplyMarkup;
+    media?: Api.TypeInputMedia;
+}
+
+export interface CustomEditMessageOptions extends EditMessageOptions {
+    parseMode?: ParseMode;
 }
 
 export interface CustomSendMessageOptions extends SendMessageOptions {
@@ -65,6 +81,7 @@ export interface TMessage {
         length: number;
     }[];
     sender: TUser;
+    gram: Message;
 }
 
 export interface CommandProps {

@@ -6,7 +6,7 @@ const bot = new Client();
 bot.launch();
 
 bot.on("command", async (ctx, { command, args }) => {
-	const cmd = bot.commands.search(command);
+	const cmd = bot.commands.search(command) || bot.commands.get(bot.aliases.get(command) as string);
 	if (!cmd) return;
 
 	const cooldown = Cooldown(cmd.meta.name, cmd.meta.cooldown as number, ctx.message.sender.id);

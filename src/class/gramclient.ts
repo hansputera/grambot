@@ -1,17 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import env from "../env";
 import inquirer from "inquirer";
-import { Api, TelegramClient } from "telegram";
+import { TelegramClient } from "telegram";
 import { StoreSession } from "telegram/sessions";
 import { NewMessage, NewMessageEvent } from "telegram/events";
 import TelegramAPI from "./telegram";
 import Context from "./context";
-import type { CallbackContext, CallbackError } from "typings";
-import { getEntityType } from "../util/command";
+import type { CallbackContext, CallbackError, TMessage } from "typings";
 import { messageConvert } from "../util/message";
+import * as messageParse from "telegram/client/messageParse";
 
 const session = new StoreSession(env.SESSION);
 export default class GramClient extends TelegramClient {
+	public messageParse = messageParse;
     public telegram = new TelegramAPI(this);
     constructor() {
     	super(session, Number(env.API_ID), env.API_HASH, {
@@ -22,15 +23,8 @@ export default class GramClient extends TelegramClient {
 
     public onNewMessage(callback: CallbackContext): void {
     	this.addEventHandler(async (event: NewMessageEvent) => {
-    		if (event.message.entities) event.message.entities = event.message.entities.map((e: Api.TypeMessageEntity) => {
-    			return {
-    				type: getEntityType(e),
-    				length: e.length,
-    				offset: e.offset
-    			};
-    		});
     		const convMessage = await messageConvert(event);
-    		const context = new Context(this, convMessage);
+    		const context = new Context(this, convMessage as TMessage);
     		return callback(context);
     	}, new NewMessage({}));
     }

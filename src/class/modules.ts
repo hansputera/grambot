@@ -24,6 +24,7 @@ export default class Modules {
 						const cmd = commands.toArray().find((x) => x.value.meta.path == pathFl);
 						const prop: CommandComponent = new (require(pathFl).default)(this.client, {});
 						prop.meta = cmd?.value.meta as CommandProps;
+						prop.meta.path = pathFl;
 						commands.set(prop.meta?.name as string, prop);
 					});
 				});

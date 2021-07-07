@@ -2,6 +2,7 @@
 import { Api } from "telegram";
 import type { NewMessageEvent } from "telegram/events";
 import type { TMessage } from "typings";
+import { getEntityType } from "./command";
 import { senderConvert } from "./user";
 
 export class SendMessageConvert {
@@ -25,6 +26,31 @@ export class SendMessageConvert {
 
     	this.date = apiResult.date || Date.now()/1000;
     }
+}
+
+export class EditMessageConvert {
+	id!:number;
+	chatId!: number;
+	date!: number;
+	constructor(apiResult: Api.Updates) {
+		if (apiResult.updates) {
+    		const updates = apiResult.updates as Api.UpdateMessageID[];
+    		if (updates.length && updates[0].id) {
+    			this.id = updates[0].id;
+    		}
+
+    		if (apiResult.chats.length) {
+    			this.chatId = apiResult.chats[0].id;
+    		}
+    	} else {
+			if (apiResult.users.length) {
+				const self = apiResult.users.find((u: Api.User) => u.self);
+				this.chatId = self?.id as number;
+			}
+    	}
+
+    	this.date = apiResult.date || Date.now()/1000;
+	}
 }
 
 export type chatType = "private" | "channel" | "group" | "unknown";
@@ -53,8 +79,15 @@ export const messageConvert = async (msg: NewMessageEvent) => {
 			mime: msg.message.sticker.mimeType
 		} : undefined,
 		fromId: msg.message.senderId,
-		entities: msg.message.entities,
-		sender: senderConvert(sender as Api.User)
+		entities: msg.message.entities ? msg.message.entities.map((e: Api.TypeMessageEntity) => {
+			return {
+				type: getEntityType(e),
+				length: e.length,
+				offset: e.offset
+			};
+		}) : undefined,
+		sender: senderConvert(sender as Api.User),
+		gram: msg.message
 	};
 };
 
