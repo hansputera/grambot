@@ -7,14 +7,17 @@ import { parseCommand } from "../util/message";
 import Modules, { aliases, commands } from "./modules";
 import { join } from "path";
 import bigInt from "big-integer";
-import Socket from "./socket";
+import Connections from "../music/connections";
+import signal from "../signal";
 
 export default class Client extends TypedEmitter<ClientEvents> {
     public gramjs = new GramClient();
     public Api = Api;
     public commands = commands;
     public aliases = aliases;
-	public socket_app = new Socket(this);
+	public connections = new Connections(this);
+	public groupCalls: Record<number, boolean> = {};
+	public signal = signal;
 
 	constructor() {
     	super();
@@ -27,6 +30,7 @@ export default class Client extends TypedEmitter<ClientEvents> {
     	this.gramjs.onError((err) => {
     		this.emit("error", err);
     	});
+		this.gramjs.onRawUpdate();
 	}
 
 	public launch(): Promise<void> {

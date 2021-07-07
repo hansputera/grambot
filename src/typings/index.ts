@@ -99,6 +99,17 @@ export interface CommandComponent {
     run(ctx: Context, args: string[]): unknown;
     client?: Client;
 }
+
+export interface SignalEvents {
+    botMutedInCall: (me: Api.GroupCallParticipant) => void;
+    userStatusUpdate: (data: SignalUpdateUserStatus) => void;
+    groupVoiceEnded: (chatId: number, voiceDuration: number) => void;
+}
+
+export interface SignalUpdateUserStatus {
+    id: number;
+    status: Api.UserStatusOnline | Api.UserStatusOffline | Api.UserStatusRecently | Api.UserStatusLastWeek | Api.UserStatusLastMonth;
+}
 /*
 export interface InlineKeyboardButton {
     text: string;
