@@ -14,3 +14,14 @@ bot.on("command", async (ctx, { command, args }) => {
 	if (cmd.meta.ownerOnly && ctx.message.sender.id != ownerID) return;
 	await cmd.run(ctx, args);
 });
+
+bot.signal.on("groupVoiceEnded", async (chatId: number) => {
+	const inCall = bot.connections.inCall(chatId);
+	if (inCall) {
+		await bot.connections.stop(chatId);
+		bot.connections.remove(chatId);
+		bot.queues.clear(chatId);
+		await bot.gramjs.telegram.sendMessage(chatId, "Stopped because group voice was ended");
+		return;
+	}
+});

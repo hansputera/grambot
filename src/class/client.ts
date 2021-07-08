@@ -9,6 +9,7 @@ import { join } from "path";
 import bigInt from "big-integer";
 import Connections from "../music/connections";
 import signal from "../signal";
+import queue from "../music/queue";
 
 export default class Client extends TypedEmitter<ClientEvents> {
     public gramjs = new GramClient();
@@ -16,8 +17,9 @@ export default class Client extends TypedEmitter<ClientEvents> {
     public commands = commands;
     public aliases = aliases;
 	public connections = new Connections(this);
-	public groupCalls: Record<number, boolean> = {};
 	public signal = signal;
+	public queues = queue;
+	public cacheChats: Record<string, unknown> = {};
 
 	constructor() {
     	super();
@@ -27,9 +29,9 @@ export default class Client extends TypedEmitter<ClientEvents> {
     		const parses = parseCommand(ctx.message.text, ctx.message.entities);
     		if (parses && !ctx.message.sender.is_bot) this.emit("command", ctx, parses);
     	});
-    	this.gramjs.onError((err) => {
-    		this.emit("error", err);
-    	});
+    	// this.gramjs.onError((err) => {
+    	// 	this.emit("error", err);
+    	// });
 		this.gramjs.onRawUpdate();
 	}
 

@@ -34,7 +34,7 @@ export default class Connection {
     }
 
     async joinCall(readable: Readable): Promise<void> {
-    	this.stream = new Stream(readable, 16, 48000, 1);
+    	this.stream = new Stream(readable);
     	this.stream.on("finish", async() => await this.end());
     	await this.tgcalls.start(this.stream.createTrack());
     	this.playing = true;
