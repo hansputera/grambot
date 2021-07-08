@@ -10,12 +10,7 @@ class Queue {
     	return this.queues[chatId].length;
     }
 
-    get(chatId: number): Song | undefined {
-    	if (chatId in this.queues && this.queues[chatId].length) return this.queues[chatId][0];
-    	return undefined;
-    }
-
-    getAll(chatId: number): Song[] {
+    get(chatId: number): Song[] {
     	if (chatId in this.queues) return this.queues[chatId];
     	else return [];
     }

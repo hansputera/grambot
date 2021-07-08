@@ -20,8 +20,9 @@ export default class Connection {
 
     async end(): Promise<void> {
     	this.playing = false;
-    	const q = queue.get(this.chatId);
-    	if (q?.readable) this.setReadable(q.readable);
+    	queue.queues[this.chatId].shift();
+    	const q = queue.get(this.chatId)[0];
+    	if (q && q?.readable) this.setReadable(q.readable);
     	else {
     		await this.calls.leaveCall(this.chatId);
     		this.remove();

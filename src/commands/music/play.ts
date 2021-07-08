@@ -80,15 +80,15 @@ export default class PlayCommand implements CommandComponent {
 			downloadingVideo: true
 		};
 */
+		queue.push(ctx.message.chatId as number, {
+			title: video.title,
+			url: video.link,
+			seconds: Number(video.duration),
+			requester: ctx.message.sender.id,
+			readable: out
+		});
 		if (this.client.connections.playing(ctx.message.chatId as number)) {
-			const positionNow = queue.push(ctx.message.chatId as number, {
-				title: video.title,
-				url: video.link,
-				seconds: Number(video.duration),
-				requester: ctx.message.sender.id,
-				readable: out
-			});
-			await ctx.replyWithHTML(`<b>#\ufe0f\u20e3 @${ctx.message.sender.username} queued ${video.link} <pre>${positionNow}</pre></b>`);
+			await ctx.replyWithHTML(`<b>#\ufe0f\u20e3 @${ctx.message.sender.username} queued ${video.link}</b>`);
 		} else {
 			await ctx.replyWithHTML(`<b>\u25b6\ufe0f @${ctx.message.sender.username} is now playing ${video.link}</b>`);
 			await this.client.connections.setReadable(ctx.message.chatId as number, out);
