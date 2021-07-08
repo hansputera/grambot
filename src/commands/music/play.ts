@@ -20,6 +20,12 @@ import Prism from "prism-media";
 export default class PlayCommand implements CommandComponent {
 	constructor(public client: Client, public meta: CommandProps) {}
 	public async run(ctx: Context, args: string[]): Promise<void> {
+		const hasVoice = await this.client.gramjs.telegram.hasVoiceChat(ctx.message.chatId as number);
+		if (!hasVoice) {
+			await ctx.replyWithMarkdown("Please create a **group voice call** first before execute this command!");
+			return;
+		}
+
 		const query = args.join(" ");
 		if (!query.length) {
 			await ctx.replyWithMarkdown("Mohon masukan judul lagu!");

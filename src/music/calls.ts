@@ -10,10 +10,7 @@ export default class CallsClient {
     constructor(public client: Client) {}
     async joinCall(chatid: number, params: JoinVoiceCallParams<Record<string, unknown>>) {
     	if (!(chatid in this.calls)) {
-    		const entity = await this.client.gramjs.getEntity(chatid);
-    		const fullChat = (await this.client.gramjs.invoke(new Api.messages.GetFullChat({
-    			chatId: entity.id
-    		}))).fullChat;
+    		const fullChat = await this.client.gramjs.telegram.getFullChat(chatid);
     		if (!fullChat) throw new Error("No voice chat");
     		this.calls[chatid] = fullChat.call as Api.InputGroupCall;
     	}

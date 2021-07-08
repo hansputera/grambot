@@ -16,6 +16,7 @@ bot.on("command", async (ctx, { command, args }) => {
 });
 
 bot.signal.on("groupVoiceEnded", async (chatId: number) => {
+	console.log(chatId);
 	const inCall = bot.connections.inCall(chatId);
 	if (inCall) {
 		await bot.connections.stop(chatId);

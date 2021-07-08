@@ -19,7 +19,6 @@ export default class Client extends TypedEmitter<ClientEvents> {
 	public connections = new Connections(this);
 	public signal = signal;
 	public queues = queue;
-	public cacheChats: Record<string, unknown> = {};
 
 	constructor() {
     	super();
