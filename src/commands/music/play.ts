@@ -42,9 +42,9 @@ export default class PlayCommand implements CommandComponent {
 				"-f",
 				"s16le",
 				"-ar",
-				"48000",
+				"65000",
 				"-ac",
-				"2"
+				"1"
 			]
 		});
 		const readable = ytdl(video.link, {
@@ -53,6 +53,7 @@ export default class PlayCommand implements CommandComponent {
 		});
 		
 		const out = readable.pipe(transcoder);
+
 		// const opus = new Prism.opus.Encoder({
 		// 	rate: 48000,
 		// 	channels: 2,
