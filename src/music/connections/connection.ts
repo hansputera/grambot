@@ -13,7 +13,7 @@ export default class Connection {
     stream!: Stream;
     tgcalls!: TGCalls<Record<string, unknown>>;
     remove!: () => void;
-    private calls = new CallsClient(this.client);
+    public calls = new CallsClient(this.client);
 
     constructor(private client: Client, public chatId: number, removeFunc: () => boolean) {
     	this.tgcalls = new TGCalls({});

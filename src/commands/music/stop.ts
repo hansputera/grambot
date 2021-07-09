@@ -24,7 +24,7 @@ export default class StopCommand implements CommandComponent {
 			return;
 		}
 
-		await this.client.connections.stop(ctx.message.chatId as number);
+		await this.client.connections.destroy(ctx.message.chatId as number);
 		this.client.connections.remove(ctx.message.chatId as number);
 		this.client.queues.clear(ctx.message.chatId as number);
 		await ctx.reply(`Stopped by @${ctx.message.sender.username}`);

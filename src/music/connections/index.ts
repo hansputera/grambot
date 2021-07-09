@@ -16,6 +16,14 @@ export default class Connections {
     	}
     }
 
+    async destroy(chatId: number): Promise<void> {
+    	const connection = this.connections[chatId];
+    	if (!connection.stream.finished) connection.stream.finish();
+    	await connection.calls.leaveCall(chatId);
+    	connection.remove();
+    	await this.client.gramjs.telegram.sendMessage(chatId, "🤙 Current music has destroyed.");
+    }
+
     inCall(chatId: number): boolean {
     	return !!this.connections[chatId];
     }
