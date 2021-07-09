@@ -6,6 +6,7 @@ const bot = new Client();
 bot.launch();
 
 bot.on("command", async (ctx, { command, args }) => {
+	if (!ctx.message.sender) return;
 	const cmd = bot.commands.search(command) || bot.commands.get(bot.aliases.get(command) as string);
 	if (!cmd) return;
 
@@ -16,7 +17,6 @@ bot.on("command", async (ctx, { command, args }) => {
 });
 
 bot.signal.on("groupVoiceEnded", async (chatId: number) => {
-	console.log(chatId);
 	const inCall = bot.connections.inCall(chatId);
 	if (inCall) {
 		await bot.connections.stop(chatId);

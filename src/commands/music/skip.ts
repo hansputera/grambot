@@ -7,7 +7,8 @@ import type { CommandComponent, CommandProps } from "../../typings";
 	name: "skip",
 	description: "Skipping current music",
 	aliases: ["s"],
-	path: __filename
+	path: __filename,
+	cooldown: 15000
 })
 export default class SkipCommand implements CommandComponent {
 	constructor(public client: Client, public meta: CommandProps) {}

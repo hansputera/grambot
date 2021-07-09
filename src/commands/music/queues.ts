@@ -13,8 +13,8 @@ export default class QueueCommand implements CommandComponent {
 	constructor(public client: Client, public meta: CommandProps) {}
 
 	public async run(ctx: Context): Promise<void> {
-		const queues = this.client.queues.queues[ctx.message.chatId as number];
-		if (!queues) {
+		const queues = this.client.queues.get(ctx.message.chatId as number);
+		if (!queues || !queues.length) {
 			await ctx.reply("There is nothing queue");
 			return;
 		}

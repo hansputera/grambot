@@ -42,7 +42,7 @@ export default class Connections {
     async stop(chatId: number): Promise<0 | 1 | 2> {
     	if (this.inCall(chatId)) {
     		if (await this.connections[chatId].stop()) {
-    			this.remove(chatId);
+    			if (this.client.queues.get(chatId).length == 0) this.remove(chatId);
     			return 0;
     		} else return 1;
     	} else return 2;

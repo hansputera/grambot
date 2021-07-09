@@ -14,7 +14,6 @@ import Prism from "prism-media";
 		"p", "playmusic"
 	],
 	cooldown: 15000,
-	ownerOnly: true,
 	path: __filename
 })
 export default class PlayCommand implements CommandComponent {
@@ -25,7 +24,6 @@ export default class PlayCommand implements CommandComponent {
 			await ctx.replyWithMarkdown("Please create a **group voice call** first before execute this command!");
 			return;
 		}
-
 		const query = args.join(" ");
 		if (!query.length) {
 			await ctx.replyWithMarkdown("Mohon masukan judul lagu!");
@@ -51,7 +49,7 @@ export default class PlayCommand implements CommandComponent {
 				"65000",
 				"-ac",
 				"1"
-			]
+			],
 		});
 		const readable = ytdl(video.link, {
 			filter: "audioonly",
@@ -85,7 +83,8 @@ export default class PlayCommand implements CommandComponent {
 			url: video.link,
 			seconds: Number(video.duration),
 			requester: ctx.message.sender.id,
-			readable: out
+			readable: out,
+			loop: false
 		});
 		if (this.client.connections.playing(ctx.message.chatId as number)) {
 			await ctx.replyWithHTML(`<b>#\ufe0f\u20e3 @${ctx.message.sender.username} queued ${video.link}</b>`);

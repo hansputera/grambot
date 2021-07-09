@@ -30,7 +30,7 @@ export default class PauseCommand implements CommandComponent {
 			await ctx.reply(`Paused by @${ctx.message.sender.username}`);
 			break;
 		case 1:
-			await ctx.replyWithMarkdown("**Not playing**");
+			await ctx.replyWithMarkdown("**Already paused**");
 			break;
 		case 2:
 			await ctx.replyWithMarkdown("**Not in call**");

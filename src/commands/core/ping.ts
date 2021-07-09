@@ -22,5 +22,6 @@ export default class PingCommand implements CommandComponent {
 			const time = (end - start).toFixed(2);
 			await this.client.gramjs.telegram.editMessage(ctx.message.chatId as number, m.id, "Pong! " + time + "ms");
 		}
+
 	}
 }

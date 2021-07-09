@@ -6,6 +6,7 @@ export default class Song {
         public url: string,
         public seconds: number,
         public requester: number,
-        public readable: Readable
+        public readable: Readable,
+        public loop = false
 	) {}
 }

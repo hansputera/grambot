@@ -35,7 +35,7 @@ export default class TelegramAPI {
 		const ent = await this.client.getEntity(chatId);
 		if (ent.className == "Channel") {
 			return (await this.client.invoke(new Api.channels.GetFullChannel({
-				channel: ent.id
+				channel: chatId
 			}))).fullChat as Api.ChatFull;
 		} else {
 			return (await this.client.invoke(new Api.messages.GetFullChat({

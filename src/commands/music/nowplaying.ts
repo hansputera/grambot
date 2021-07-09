@@ -13,9 +13,9 @@ import type { CommandComponent, CommandProps } from "../../typings";
 export default class NowPlayingCommand implements CommandComponent {
 	constructor(public client: Client, public meta: CommandProps) {}
 	public async run(ctx: Context): Promise<void> {
-		const q = this.client.queues.queues[ctx.message.chatId as number];
-		if (!q) {
-			await ctx.reply("There is notthing queue");
+		const q = this.client.queues.get(ctx.message.chatId as number);
+		if (!q || !q.length) {
+			await ctx.reply("There is nothing queue");
 			return;
 		}
 
