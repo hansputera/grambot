@@ -26,12 +26,12 @@ export default class PlayCommand implements CommandComponent {
 		}
 		const query = args.join(" ");
 		if (!query.length) {
-			await ctx.replyWithMarkdown("Mohon masukan judul lagu!");
+			await ctx.replyWithMarkdown("Please enter song title!");
 			return;
 		}
 		const { videos } = await scrape.search(query);
 		if (!videos.length) {
-			await ctx.replyWithMarkdown("Video tidak dapat ditemukan!\nMohon lebih spesifik lagi!");
+			await ctx.replyWithMarkdown("Video not found\nTry again!");
 			return;
 		}
 		const video = videos[0];
